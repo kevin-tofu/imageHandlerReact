@@ -2,7 +2,6 @@ import React from "react";
 import {useState} from "react"
 import {ButtonImport, ButtonPost, AlertDialog, CircularProgress} from "./index";
 import axios from "axios"
-// import {v4 as uuidv4} from 'uuid';
 import "./styles/ImageHandler.css";
 
 
@@ -11,9 +10,7 @@ const ImageHandler = (props) => {
 
   let [v_hasfile1, set_v_hasfile1] = useState(false)
   let [v_hasfile2, set_v_hasfile2] = useState(false)
-  // let [v_myid, set_v_myid] = useState(null)
   let [v_files, set_v_files] = useState(null)
-  // let [url_get, set_url_get] = useState(null)
   let [openAlert, set_openAlert] = useState(false)
   let [open_cpLoading, set_open_cpLoading] = useState(false)
   const [url_host] = useState(props.url_host)
@@ -24,8 +21,6 @@ const ImageHandler = (props) => {
 
     set_v_files(e.target.files)
     set_v_hasfile1(true)
-    // set_v_hasfile2(false)
-    // set_v_myid(uuidv4())
   }
 
   const postImage = async (e) => {
@@ -87,7 +82,7 @@ const ImageHandler = (props) => {
   return (
     <div>
       <div>
-        <h2>Human-Posture Estimator</h2>
+        <h2>{props.title}</h2>
         <ButtonImport
           className="image"
           name="image"
@@ -106,8 +101,8 @@ const ImageHandler = (props) => {
 
         <AlertDialog open={openAlert} 
                      handleClose={handleClose}
-                     textTitle='Choose a photo that includes a human body .'
-                     textContent='Image-Button to choose picture is on your left-side. This module is going to estimate human posture after your submitting'>
+                     textTitle={props.dialog_title}
+                     textContent={props.dialog_textcontent}>
         </AlertDialog>
         
       </div>
