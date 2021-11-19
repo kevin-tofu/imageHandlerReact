@@ -1,0 +1,22 @@
+
+.mytable{
+    /* border-top: 1px solid #000000;
+    border-left: 1px solid #000000;
+    border-right: 1px solid #000000;
+    border-bottom: 1px solid #000000; */
+    border-spacing: 0;
+    margin-bottom: 5px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.imagescls {
+    /* ... */
+    /* 親のdivと同じ幅高さまでしか広がらないようにする */
+    max-width: 50vw;
+    max-height: 50vh;
+    /* margin-left: auto; */
+    /* margin-right: auto; */
+    /* margin-left: 50%;
+    margin-right: 50%; */
+    /* vertical-align: middle */
+}
