@@ -10,7 +10,7 @@ import "./styles/ImageHandler.css";
 const ImageHandler = (props) => {
 
   let [v_hasfile1, set_v_hasfile1] = useState(false)
-  // let [v_hasfile2, set_v_hasfile2] = useState(false)
+  let [v_hasfile2, set_v_hasfile2] = useState(false)
   // let [v_myid, set_v_myid] = useState(null)
   let [v_files, set_v_files] = useState(null)
   // let [url_get, set_url_get] = useState(null)
@@ -18,6 +18,7 @@ const ImageHandler = (props) => {
   let [open_cpLoading, set_open_cpLoading] = useState(false)
   const [url_host] = useState(props.url_host)
   const [api_post] = useState(props.api_post)
+  let [image_get, set_image_get] = useState(null)
   
   const selectFile = (e) => {
 
@@ -37,26 +38,44 @@ const ImageHandler = (props) => {
       var fd = new FormData();
       fd.append('file', v_files[0])
 
-      const config_post = { headers: { 'Content-Type': 'multipart/form-data'},
-                        mode: 'no-cors'
+      const config_post = { 
+              mode: 'no-cors',
+              headers: 
+                  { 
+                    'Access-Control-Allow-Origin': '*',
+                    'Content-Type': 'multipart/form-data'
+                    // 'Access-Control-Allow-Origin': '*'
+              },
+              // withCredentials: true,
+              // credentials: 'same-origin',
       };
-
-      console.log(url)
+      
+      // console.log(url)
       set_open_cpLoading(true)
       axios.post(url, fd, config_post).then(res_post => {
-      
-        console.log(res_post.status)
-        // set_url_get(`${HOST_URL}/${API_POST}/?dataID=${v_myid}`)
-        // set_v_hasfile2(true)
-        set_open_cpLoading(false)
         
-
+        console.log(res_post.data.id_data)
+        // https://simplernerd.com/js-image-binary-jfif/
+        const config_get = { 
+          mode: 'no-cors',
+          responseType: "blob",
+          'headers': 
+              { 'Access-Control-Allow-Origin': '*',
+                'idData': res_post.data.id_data
+          },
+        };
+        axios.get(url, config_get)
+        .then(res_get => {
+          // const url = URL.createObjectURL(res_get.data);
+          set_image_get(URL.createObjectURL(res_get.data))
+          set_v_hasfile2(true)
+        })
+        set_open_cpLoading(false)
       }).catch(e => {
         console.log(e)
         set_open_cpLoading(false)
       })
     }
-    
     
   }
 
@@ -97,7 +116,7 @@ const ImageHandler = (props) => {
             <tbody>
               <tr>
                 <td>{v_hasfile1 && <img src={URL.createObjectURL(v_files[0])} className="imagescls" alt='input' />}</td>
-                {/* <td>{v_hasfile2 && <img src={url_get} className="imagescls" alt='output' />}</td> */}
+                <td>{v_hasfile2 && <img src={image_get} className="imagescls" alt='output' />}</td>
                 {/* <td>{v_hasfile2 && <img src={this.state.file_result} alt='Thumb' /> }</td> */}
                 {/* <td>{v_hasfile2 && <img src={this.state.url_get} alt='Thumb2' />}</td> */}
               </tr>
