@@ -15,7 +15,8 @@ const ButtonImport = (props) => {
   return (
     <label htmlFor={`upload-button-${props.name}`}>
     <input
-      accept="image/*"
+      // accept="image/*"
+      accept="image/jpg, image/jpeg, image/JPG, image/png, image/PNG"
       className={classes.input}
       id={`upload-button-${props.name}`}
       name={props.name}
