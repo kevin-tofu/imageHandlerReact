@@ -25,19 +25,13 @@ const ImageHandler = (props) => {
   const [url_host] = useState(props.url_host)
   const [api_post] = useState(props.api_post)
   let [image_get, set_image_get] = useState(null)
-  // let [value, setValue] = React.useState(0.15)
-  // const [nnparams, setnnParams] = useState(props.nnParams)
 
   let [PostProgress, setPostProgress] = React.useState(0.0)
-
-//   const [file_ext, setfile_ext] = useState('')
   let [alert1, set_alert1] = useState('')
   
   // let [alert2, set_alert2] = useState('')
   // let [alert3, set_alert3] = useState('')
   
-
-
   const selectFile = (e) => {
 
     const file = e.target.files[0];
@@ -46,8 +40,6 @@ const ImageHandler = (props) => {
         set_v_hasfile1(true)
         // console.log(image) // file or base64
     });
-
-    // set_v_files(e.target.files[0])
     set_v_hasfile2(false)
     set_image_get(null)
     set_open_cpLoading(false)
@@ -100,20 +92,19 @@ const ImageHandler = (props) => {
                             params: props.nnParams
         }
       
-
     //   console.log(url_post)
       set_open_cpLoading(true)
       // set_alert3(url_post)
+      // console.log(config_post)
       axios.post(url_post, fd, config_post).then(res_post => {
         
-        console.log(res_post.data.id_data)
+        // console.log(res_post.data.id_data)
         // set_alert2(res_post.data.id_data)
         getImage(url_get, res_post.data.id_data)
 
       }).catch(e => {
         // set_alert3(`failed posting: ${url_post}`)
         // set_alert2(e.response)
-        
       }).finally(() => {
         set_open_cpLoading(false)
       })
@@ -159,10 +150,7 @@ const ImageHandler = (props) => {
             <tbody>
               <tr>
                 <td>{v_hasfile1 && <img src={URL.createObjectURL(v_files)} className="imagescls" alt='input' />}</td>
-                {/* <td>{v_hasfile1 && <img src={v_files} className="imagescls" alt='input' />}</td> */}
                 <td>{v_hasfile2 && <img src={image_get} className="imagescls" alt='output' />}</td>
-                {/* <td>{v_hasfile2 && <img src={this.state.file_result} alt='Thumb' /> }</td> */}
-                {/* <td>{v_hasfile2 && <img src={this.state.url_get} alt='Thumb2' />}</td> */}
               </tr>
             </tbody>
         </table>
@@ -171,7 +159,7 @@ const ImageHandler = (props) => {
           {open_cpLoading && <CircularProgress loading={open_cpLoading}></CircularProgress>}
         </div>
         <h3>{PostProgress}</h3>
-        <h2 color='red' >{alert1}</h2>
+        <h2>{alert1}</h2>
         {/* <h3>{alert3}</h3>
         <h3>{alert2}</h3> */}
         
