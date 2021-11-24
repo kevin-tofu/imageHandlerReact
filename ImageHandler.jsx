@@ -116,12 +116,24 @@ const ImageHandler = (props) => {
     set_openAlert(false)
   }
   
-    
   return (
     <div>
       <div>
-        
         <h2>{props.title}</h2>
+        <table className='mytable'>
+            <tbody>
+              <tr>
+                <td>{v_hasfile1 && <img src={URL.createObjectURL(v_files)} className="imagescls" alt='input' />}</td>
+                <td>{v_hasfile2 && <img src={image_get} className="imagescls" alt='output' />}</td>
+              </tr>
+            </tbody>
+        </table>
+
+        <div>
+          {open_cpLoading && <CircularProgress loading={open_cpLoading}></CircularProgress>}
+        </div>
+        <h3>{PostProgress}</h3>
+        
         <ButtonImport
           className="image"
           name="image"
@@ -144,25 +156,13 @@ const ImageHandler = (props) => {
                      textContent={props.dialog_textcontent}>
         </AlertDialog>
         
-      </div>
-
-        <table className='mytable'>
-            <tbody>
-              <tr>
-                <td>{v_hasfile1 && <img src={URL.createObjectURL(v_files)} className="imagescls" alt='input' />}</td>
-                <td>{v_hasfile2 && <img src={image_get} className="imagescls" alt='output' />}</td>
-              </tr>
-            </tbody>
-        </table>
-
-        <div>
-          {open_cpLoading && <CircularProgress loading={open_cpLoading}></CircularProgress>}
-        </div>
-        <h3>{PostProgress}</h3>
         <h2>{alert1}</h2>
         {/* <h3>{alert3}</h3>
         <h3>{alert2}</h3> */}
-        
+
+      </div>
+
+       
 
     </div>
   )
