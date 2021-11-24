@@ -100,7 +100,7 @@ const ImageHandler = (props) => {
         
         // console.log(res_post.data.id_data)
         // set_alert2(res_post.data.id_data)
-        getImage(url_get, res_post.data.id_data)
+        getImage(url_get, res_post.data.idData)
 
       }).catch(e => {
         // set_alert3(`failed posting: ${url_post}`)
