@@ -51,7 +51,7 @@ const ImageHandler = (props) => {
         //   mode: 'no-cors',
           responseType: "blob",
           headers: { 
-                // 'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Origin': '*',
                 'idData': idData
             },
           onDownloadProgress: (progressEvent) => {
@@ -98,8 +98,8 @@ const ImageHandler = (props) => {
       // console.log(config_post)
       axios.post(url_post, fd, config_post).then(res_post => {
         
-        // console.log(res_post.data.id_data)
-        // set_alert2(res_post.data.id_data)
+        console.log(res_post.data.idData)
+        // set_alert2(res_post.data.idData)
         getImage(url_get, res_post.data.idData)
 
       }).catch(e => {

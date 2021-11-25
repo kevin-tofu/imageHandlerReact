@@ -11,12 +11,6 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-
-// const MenuList = (props) => (
-//     props.items.map(item => item.use === false ? <MenuItem value={item.value}>{item.name}</MenuItem> : {})
-    
-// );
-
 function filterItem (sList, mybool) {
   const temp = sList.filter((item) => { if (item['use'] === mybool) { return item }})
   return temp
@@ -31,51 +25,41 @@ function getParams(sList, alpha){
   return {style1: temp0[0], style2: temp0[1], alpha:alpha}
 }
 
+function reducer(state, {idx_style, event}){
+
+  let temp_using;
+  if (idx_style === 0){
+    temp_using = [event.target.value, state.style_using[1]]
+  } else {
+    temp_using = [state.style_using[0], event.target.value]
+  }
+  const temp = {data: state.data.map(item => { 
+                        if (item.value === state.style_using[idx_style]) {
+                          return {...item, use: false}
+                        }else if (item.value === event.target.value) {
+                          return {...item, use: true}
+                        } else {
+                          return item
+                        }
+                      }), 
+                style_using: temp_using}
+  
+  console.log(state)
+  console.log(temp)
+  return temp
+};
+
 
 const ImageHandlerSlider = (props) => {
-
-  
 
   const handleChange = (event, newValue) => {
     setvalue_slider(newValue)
   }
-  const [style1, setStyle1] = React.useState(myvalues(props.sSelective, true)[0]);
-  const [style2, setStyle2] = React.useState(myvalues(props.sSelective, true)[1]);
-  const [stylelist, setStylelist] = React.useState(props.sSelective);
+  const [state, dispatch] = React.useReducer(reducer, {data: props.sSelective, 
+                                                       style_using: [myvalues(props.sSelective, true)[0], myvalues(props.sSelective, true)[1]]
+                                                       })
+
   let [value_slider, setvalue_slider] = useState(props.initAlpha)
-  
-  const handleChangeSelect1 = (event) => {
-
-    // console.log(event)
-    // console.log('style1', style1, '->', event.target.value)
-    setStylelist(stylelist.map(item => { 
-      if (item.value === style1) {
-        return {...item, use: false}
-      }else if (item.value === event.target.value) {
-        return {...item, use: true}
-      } else {
-        return item
-      }
-    }))
-    setStyle1(event.target.value);
-  };
-
-  const handleChangeSelect2 = (event) => {
-
-    // console.log(event)
-    // console.log('style2', style2, '->', event.target.value)
-    setStylelist(stylelist.map(item => { 
-      if (item.value === style2) {
-        return {...item, use: false}
-      }else if (item.value === event.target.value) {
-        return {...item, use: true}
-      } else {
-        return item
-      }
-    }))
-    setStyle2(event.target.value);
-  };
-
   
 
   return (
@@ -84,7 +68,7 @@ const ImageHandlerSlider = (props) => {
         <ImageHandler url_host={props.url_host} api_post={props.api_post}
                       title={props.title}
                       dialog_title = {props.dialog_title} dialog_textcontent={props.dialog_textcontent}
-                      nnParams = {getParams(stylelist, value_slider)}
+                      nnParams = {getParams(props.sSelective, value_slider)}
         />
       </div>
 
@@ -93,16 +77,15 @@ const ImageHandlerSlider = (props) => {
           <Select
             labelId="demo-simple-select-autowidth-label1"
             id="demo-simple-select-autowidth1"
-            value={style1}
-            onChange={handleChangeSelect1}
+            value={state.style_using[0]}
+            // onChange={handleChangeSelect1}
+            onChange={(e) => dispatch({idx_style:0, event:e})}
             autoWidth
             label="Style1"
           >
-              {/* <MenuItem value=""><em>None</em></MenuItem> */}
-              {/* <MenuItem value={1}>Style-0</MenuItem> */}
-              <MenuItem value={style1}>{stylelist[style1]['name']}</MenuItem>
+              <MenuItem value={state.style_using[0]}>{state.data[state.style_using[0]]['name']}</MenuItem>
               {
-                filterItem(stylelist, false).map(item => { 
+                filterItem(state.data, false).map(item => { 
                   return <MenuItem key={item['name']} value={item['value']}>{item.name}</MenuItem> 
                 })
               }
@@ -114,18 +97,16 @@ const ImageHandlerSlider = (props) => {
           <Select
             labelId="demo-simple-select-autowidth-label2"
             id="demo-simple-select-autowidth2"
-            value={style2}
-            onChange={handleChangeSelect2}
+            value={state.style_using[1]}
+            // onChange={handleChangeSelect2}
+            onChange={(e) => dispatch({idx_style:1, event:e})}
             autoWidth
             label="Style2"
           >
-              {/* <MenuItem value={2}>Style-1</MenuItem>
-              <MenuItem value={3}>Style-2</MenuItem>
-              <MenuItem value={4}>Style-3</MenuItem> */}
-              <MenuItem value={style2}>{stylelist[style2]['name']}</MenuItem>
+              <MenuItem value={state.style_using[1]}>{state.data[state.style_using[1]]['name']}</MenuItem>
               {
-                filterItem(stylelist, false).map(item => { 
-                  return <MenuItem key={item['name']} value={item['value']}>{item['name']}</MenuItem> 
+                filterItem(state.data, false).map(item => { 
+                  return <MenuItem key={item['name']} value={item['value']}>{item.name}</MenuItem> 
                 })
               }
           </Select>
