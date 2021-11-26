@@ -43,7 +43,7 @@ const ImageHandler = (props) => {
     set_v_hasfile2(false)
     set_image_get(null)
     set_open_cpLoading(false)
-    set_alert1(`${e.target.files[0].name}`)
+    // set_alert1(`${e.target.files[0].name}`)
   }
 
   const getImage = async (url_get, idData) => {
@@ -156,7 +156,7 @@ const ImageHandler = (props) => {
                      textContent={props.dialog_textcontent}>
         </AlertDialog>
         
-        <h2>{alert1}</h2>
+        {/* <h2>{alert1}</h2> */}
         {/* <h3>{alert3}</h3>
         <h3>{alert2}</h3> */}
 
