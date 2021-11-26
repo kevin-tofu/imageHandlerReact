@@ -32,7 +32,7 @@ function reducer(state, {index, value}){
 
 const ImageHandlerSlider = (props) => {
 
-  const [state, dispatch] = React.useReducer(reducer, props.nnParams)
+  const [nnparamsList, dispatch] = React.useReducer(reducer, props.nnParams)
 
   return (
     <>
@@ -40,15 +40,15 @@ const ImageHandlerSlider = (props) => {
         <ImageHandler url_host={props.url_host} api_post={props.api_post}
                       title={props.title}
                       dialog_title = {props.dialog_title} dialog_textcontent={props.dialog_textcontent}
-                      nnParams = {getParams(state)}
+                      nnParams = {getParams(nnparamsList)}
         />
       </div>
 
       <div>
         <Box sx={{ width: 400 }} m="auto" >
           <Stack spacing={2} sx={{ mb: 1}} alignItems="center" justifyContent="center">
-                { state.map((item, idx) => {
-                    return <>
+                { nnparamsList.map((item, idx) => {
+                    return <div key={item.name}>
                               <Slider aria-label= {item.name} //"Volume" 
                                   value={item.value} 
                                   onChange={ (e, val) => { dispatch({index:idx, value:val}) }} 
@@ -57,7 +57,7 @@ const ImageHandlerSlider = (props) => {
                                   step={item.step}
                               />
                               <h4>{item.name} : {item.value}</h4>
-                            </>
+                            </div>
                   })
                 }
           </Stack>

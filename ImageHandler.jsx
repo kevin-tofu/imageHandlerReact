@@ -56,7 +56,7 @@ const ImageHandler = (props) => {
             },
           onDownloadProgress: (progressEvent) => {
             setPostProgress(Math.round( 50 + 50 * progressEvent.loaded / progressEvent.total))
-            console.log('Uploading...' + PostProgress)
+            // console.log('Uploading...' + PostProgress)
           },
           
           timeout: 15000
@@ -98,7 +98,7 @@ const ImageHandler = (props) => {
       // console.log(config_post)
       axios.post(url_post, fd, config_post).then(res_post => {
         
-        console.log(res_post.data.idData)
+        // console.log(res_post.data.idData)
         // set_alert2(res_post.data.idData)
         getImage(url_get, res_post.data.idData)
 
