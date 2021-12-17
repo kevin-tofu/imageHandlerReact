@@ -10,7 +10,6 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 function get_styles(state, logic_use){
-
   if (state !== undefined) {
     const temp = state.reduce((accumlator, currentValue, index) => {
       if (currentValue.use === logic_use){
@@ -25,7 +24,6 @@ function get_styles(state, logic_use){
 }
 
 function get_nnParams(state, alpha){
-
   const temp = get_styles(state, true)
   if (temp !== undefined){
     return {style1: temp[0].value, style2: temp[1].value, alpha:alpha}
@@ -35,8 +33,13 @@ function get_nnParams(state, alpha){
 
 }
 
+function reducerStyle(state, action){
+
+  state[action.arg] = action.value
+  return state
+}
+
 function reducer(state, action){
-  
   const temp = state.map((item, index_loop) => { 
     if (item.value === action.value) {
       return {...item, use: true}
@@ -52,11 +55,21 @@ function reducer(state, action){
 
 const ImageHandler2SelectiveSlider = (props) => {
 
-  const [state, dispatch] = React.useReducer(reducer, props.sSelective);
+  
   const [slider_value, setSlider_value] = React.useState(0.2);
 
-  const onChangeSelective = (e, value_old) => {
+  const [state, dispatch] = React.useReducer(reducer, props.sSelective);
+  const [styleUse, dispatchStyleuse] = React.useReducer(reducerStyle, 
+                                                        get_styles(props.sSelective, true));
+
+
+  const onChangeSelective = (arg, e, value_old) => {
+    
     dispatch({value: e.target.value, value_old: value_old})
+    // const temp = {...state[e.target.value], use: true}
+    // temp.use = true
+    dispatchStyleuse({arg: arg, value: {...state[e.target.value], use: true}})
+
   }
 
   return (
@@ -69,6 +82,8 @@ const ImageHandler2SelectiveSlider = (props) => {
         />
       </div>
 
+      <br></br>
+
       <Box Box sx={{ minWidth: 120 }}>
       </Box>
 
@@ -78,11 +93,12 @@ const ImageHandler2SelectiveSlider = (props) => {
           <Select
               labelId="select-label1"
               id="select-label1"
-              value={get_styles(state, true)[0].value}
+              value={styleUse[0].value}
               label="Style1"
-              onChange={e => { onChangeSelective(e, get_styles(state, true)[0].value) }}
+              onChange={e => { onChangeSelective(0, e, styleUse[0].value) }}
             >
-            <MenuItem key='now0' value={get_styles(state, true)[0].value}>{get_styles(state, true)[0].name}</MenuItem>
+            {/* <MenuItem key='now0' value={get_styles(state, true)[0].value}>{get_styles(state, true)[0].name}</MenuItem> */}
+            <MenuItem key='now0' value={styleUse[0].value}>{styleUse[0].name}</MenuItem>
             {
               get_styles(state, false).map((item, idx) => {
                 return <MenuItem key={idx} value={item.value}>{item.name}</MenuItem>
@@ -95,11 +111,12 @@ const ImageHandler2SelectiveSlider = (props) => {
           <Select
               labelId="select-label2"
               id="select-label2"
-              value={get_styles(state, true)[1].value}
+              value={styleUse[1].value}
               label="Style2"
-              onChange={e => { onChangeSelective(e, get_styles(state, true)[1].value) }}
+              onChange={e => { onChangeSelective(1, e, styleUse[1].value) }}
             >
-              <MenuItem key='now1' value={get_styles(state, true)[1].value}>{get_styles(state, true)[1].name}</MenuItem>
+              <MenuItem key='now1' value={styleUse[1].value}>{styleUse[1].name}</MenuItem>
+              {/* <MenuItem key='now1' value={get_styles(state, true)[1].value}>{get_styles(state, true)[1].name}</MenuItem> */}
               {
                 get_styles(state, false).map((item, idx) => {
                   return <MenuItem key={idx} value={item.value}>{item.name}</MenuItem>
@@ -109,7 +126,7 @@ const ImageHandler2SelectiveSlider = (props) => {
         </FormControl>
       </div>
 
-      <Box sx={{ width: 400 }} m="auto" >
+      <Box sx={{ width: 350 }} m="auto" >
         <Stack spacing={2} sx={{ mb: 1}} alignItems="center" justifyContent="center">
           <Slider aria-label= '' //"Volume" 
                   value={slider_value} 

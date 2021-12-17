@@ -27,7 +27,7 @@ const ImageHandler = (props) => {
   let [image_get, set_image_get] = useState(null)
 
   let [PostProgress, setPostProgress] = React.useState(0.0)
-  let [alert1, set_alert1] = useState('')
+  // let [alert1, set_alert1] = useState('')
   
   // let [alert2, set_alert2] = useState('')
   // let [alert3, set_alert3] = useState('')
