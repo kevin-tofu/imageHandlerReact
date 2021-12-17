@@ -99,8 +99,13 @@ const ImageHandler = (props) => {
       axios.post(url_post, fd, config_post).then(res_post => {
         
         // console.log(res_post.data.idData)
-        // set_alert2(res_post.data.idData)
-        getImage(url_get, res_post.data.idData)
+        if (res_post.data.idData !== undefined){
+          getImage(url_get, res_post.data.idData)
+        } else {
+          // set_alert2(res_post.data.idData)
+          // console.log(res_post.status)
+          setPostProgress('Error!!')
+        }
 
       }).catch(e => {
         // set_alert3(`failed posting: ${url_post}`)
